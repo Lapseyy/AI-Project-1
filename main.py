@@ -1,8 +1,6 @@
-# class MissCannibalsVariant():
-#     # We have missionaries and Cannibals
-#     # The boat capacity is at maximum 3
+# We have missionaries and Cannibals
+# The boat capacity is at maximum 3
 
-# pass
 from search import *
 
 
