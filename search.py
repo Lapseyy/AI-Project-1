@@ -58,4 +58,4 @@ class Problem():
         """For optimization problems, each state has a value. Hill Climbing
         and related algorithms try to maximize this value."""
         raise NotImplementedError 
-    pass
+    
