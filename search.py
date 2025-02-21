@@ -58,4 +58,67 @@ class Problem():
         """For optimization problems, each state has a value. Hill Climbing
         and related algorithms try to maximize this value."""
         raise NotImplementedError 
+
+def depth_first_graph_search(problem):
+    """Search the deepest nodes in the search tree first using graph search."""
+    frontier = [(Node(problem.initial))]  # Stack
+    explored = set()
+    while frontier:
+        node = frontier.pop()
+        if problem.goal_test(node.state):
+            return node
+        explored.add(node.state)
+        frontier.extend(child for child in node.expand(problem)
+                       if child.state not in explored and child not in frontier)
+    return None
+
+def breadth_first_graph_search(problem):
+    """Search shallowest nodes in the search tree first using graph search."""
+    node = Node(problem.initial)
+    if problem.goal_test(node.state):
+        return node
+    frontier = deque([node])  # Queue
+    explored = {node.state}
+    while frontier:
+        node = frontier.popleft()
+        for child in node.expand(problem):
+            s = child.state
+            if problem.goal_test(s):
+                return child
+            if s not in explored and child not in frontier:
+                explored.add(s)
+                frontier.append(child)
+    return None
+
+class Node:
+    """A node in a search tree."""
     
+    def __init__(self, state, parent=None, action=None, path_cost=0):
+        self.state = state
+        self.parent = parent
+        self.action = action
+        self.path_cost = path_cost
+        self.depth = 0 if parent is None else parent.depth + 1
+
+    def expand(self, problem):
+        """Return a list of nodes reachable from this node."""
+        return [self.child_node(problem, action)
+                for action in problem.actions(self.state)]
+
+    def child_node(self, problem, action):
+        """Return a child node, given an action."""
+        next_state = problem.result(self.state, action)
+        next_node = Node(next_state, self, action,
+                        problem.path_cost(self.path_cost, self.state,
+                                        action, next_state))
+        return next_node
+    
+    def solution(self):
+        """Return the sequence of actions to go from the root to this node."""
+        return [] if self.parent is None else self.parent.solution() + [self.action]
+
+    def __eq__(self, other):
+        return isinstance(other, Node) and self.state == other.state
+    
+    def __hash__(self):
+        return hash(self.state)
