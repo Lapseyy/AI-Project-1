@@ -57,10 +57,42 @@ if __name__ == '__main__':
     path = breadth_first_graph_search(mc).solution()
     print("BFS Solution:", path)
 
-    assert mc.actions((0, 0, False)) == [], "No actions should be available when goal is reached" #test egde cases 
+    assert mc.actions((0, 0, False)) == [], "No actions should be available when goal is reached" #test edge cases 
     path_dfs = depth_first_graph_search(mc).solution() #test for search algos 
     path_bfs = breadth_first_graph_search(mc).solution()
     assert isinstance(path_dfs, list), "DFS should return a list"
-    assert path_dfs != [], "DFS should return a solution"
+    assert path_dfs != [], "DFS shopuuld return a solution"
     assert isinstance(path_bfs, list), "BFS should return a list"
     assert path_bfs != [], "BFS should return a solution"
+
+    #more tests
+    def test_goal():
+        problem = Problem(initial=0, goal=5)
+        assert problem.goal_test(5) == True, "Failed since goal state should return True"
+        assert problem.goal_test(3) == False, "Failed since non-goal state should return False"
+        print("goal_test() passed all tests.")
+
+    def test_expand():
+        problem = Problem(initial=0, goal=5)
+        node = Node(state=0)
+        children = node.expand(problem)
+        assert len(children) == 2, "Failed since expand should return two children"
+        assert children[0].state == 1, "Failed since first child should have state 1"
+        assert children[1].state == 2, "Failed since second child should have state 2"
+        print("expand() passed all tests.")
+
+        def test_dfs():
+            problem = Problem(initial=0, goal=5)
+            solution_node = depth_first_graph_search(problem)
+            assert solution_node is not None, "Failed since DFS should find a solution"
+            assert solution_node.state == 5, "Failed sinceDFS should reach the goal state"
+            print("depth_first_graph_search() passed all tests.")
+            
+        def test_bfs():
+            problem = Problem(initial=0, goal=5)
+            solution_node = breadth_first_graph_search(problem)
+            assert solution_node is not None, "Failed since BFS should find a solution"
+            assert solution_node.state == 5, "Failed since BFS should reach the goal state"
+            print("breadth_first_graph_search() passed all tests.")
+
+

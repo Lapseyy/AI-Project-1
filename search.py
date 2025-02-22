@@ -122,3 +122,10 @@ class Node:
     
     def __hash__(self):
         return hash(self.state)
+    
+    #tests
+    def test_goal_test():
+        problem = Problem(initial=0, goal=5)
+        assert problem.goal_test(5) == True, "Failed: Goal state should return True"
+        assert problem.goal_test(3) == False, "Failed: Non-goal state should return False"
+        print("goal_test() passed all tests.")
