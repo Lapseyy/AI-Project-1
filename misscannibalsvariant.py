@@ -56,3 +56,11 @@ if __name__ == '__main__':
     print("DFS Solution:", path)
     path = breadth_first_graph_search(mc).solution()
     print("BFS Solution:", path)
+
+    assert mc.actions((0, 0, False)) == [], "No actions should be available when goal is reached" #test egde cases 
+    path_dfs = depth_first_graph_search(mc).solution() #test for search algos 
+    path_bfs = breadth_first_graph_search(mc).solution()
+    assert isinstance(path_dfs, list), "DFS should return a list"
+    assert path_dfs != [], "DFS should return a solution"
+    assert isinstance(path_bfs, list), "BFS should return a list"
+    assert path_bfs != [], "BFS should return a solution"
